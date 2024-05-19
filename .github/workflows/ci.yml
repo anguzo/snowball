@@ -184,6 +184,13 @@ jobs:
     - name: Test Python
       if: matrix.PYTHON
       run: $MAKE check_python python="${{ matrix.PYTHON }}" THIN_FACTOR="${{ matrix.THIN_FACTOR }}"
+    - name: Create Python Build Artifact
+      run: tar -czvf python-build-${{ matrix.PYTHON }}-${{ github.run_number }}.tar.gz path/to/python/build
+    - name: Upload Python Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-build-${{ matrix.PYTHON }}-${{ github.run_number }}
+        path: python-build-${{ matrix.PYTHON }}-${{ github.run_number }}.tar.gz
     - name: Test Java
       if: matrix.JAVA && matrix.JAVAC
       run: $MAKE check_java JAVA="${{ matrix.JAVA }}" JAVAC="${{ matrix.JAVAC }}"
